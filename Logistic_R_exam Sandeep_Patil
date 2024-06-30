@@ -1,0 +1,31 @@
+input=read.csv("C:\\Users\\Dell\\Desktop\\R\\New folder\\diabetes.csv")
+head(input)
+View(input)
+input$Outcome <- as.factor(input$Outcome)
+set.seed(123456)
+
+A <- sample(2, size = nrow(input), replace = T, prob = c(0.8, 0.2))
+train <- input[A==1,]
+test <- input[A==2,]
+train
+test
+dim(train)
+dim(test)
+model <- glm(Outcome ~ BloodPressure + Glucose + BMI + Age , data=train , family = "binomial" )
+model
+
+p1 <- predict(model, test, type = 'response')
+p1
+pred1 <- ifelse(p1>0.50 , 1, 0)
+pred1
+head(p1)
+head(test)
+summary(p1)
+
+barplot(table(input$Outcome))
+table(input$Outcome)
+
+png(file = "DB.png")
+plot(input$Outcome, main = "Logistic")
+dev.off()
+input$confusion
